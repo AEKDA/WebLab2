@@ -16,7 +16,7 @@ public class InitServlet extends HttpServlet {
     @Override
     @SuppressWarnings("unchecked")
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        JSONArray array = new JSONArray((List<TableRow>) request.getSession().getAttribute("table"));
+        JSONArray array = new JSONArray((List<TableRow>) request.getServletContext().getAttribute("table"));
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");

@@ -1,7 +1,7 @@
 package itmo.web.lab2.servlets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import itmo.web.lab2.models.TableRow;
@@ -18,10 +19,38 @@ public class AreaCheckServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Float x = parseFloat(request.getParameter("x-value"));
-        Float y = parseFloat(request.getParameter("y-value"));
-        Float r = parseFloat(request.getParameter("r-value"));
-        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        BufferedReader bufferedReader = request.getReader();
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line);
+        }
+        bufferedReader.close();
+        String jsonString = stringBuilder.toString();
+
+        JSONObject jsonObject = new JSONObject(jsonString);
+        Float x;
+        Float y;
+        Float r;
+
+        try {
+            x = jsonObject.getFloat("x");
+            y = jsonObject.getFloat("y");
+            r = jsonObject.getFloat("r");
+        } catch (JSONException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("Bad request");
+            return;
+        }
+
+        // try {
+        //     Thread.sleep(1000);
+        // } catch (Exception e) {
+
+        // }
+
+        long currentDateTime = System.currentTimeMillis() / 1000L;
 
         if (x != null && y != null && r != null) {
 
@@ -50,12 +79,12 @@ public class AreaCheckServlet extends HttpServlet {
         }
     }
 
-    public TableRow formNewTableRow(float x, float y, float r, LocalDateTime clientDate) {
-        long currentTime = System.currentTimeMillis();
+    public TableRow formNewTableRow(float x, float y, float r, long clientDate) {
+        long currentTime = System.nanoTime();
         if (x > 3 && x < 3 && y > -5 && y < 5 && r > 2 && r < 5) {
         }
         boolean isHit = isHitCircle(x, y, r) || isHitRectangle(x, y, r) || isHitTriangle(x, y, r);
-        double scriptWorkingTime = System.currentTimeMillis() - currentTime;
+        long scriptWorkingTime = System.nanoTime() - currentTime;
 
         return new TableRow(x, y, r, isHit, clientDate, scriptWorkingTime);
     }
@@ -69,17 +98,7 @@ public class AreaCheckServlet extends HttpServlet {
     }
 
     private boolean isHitTriangle(float x, float y, float r) {
-        return x <= 0 && y <= 0 && -r - y - x <= 0;
-    }
-
-    private Float parseFloat(String value) {
-        if (value == null)
-            return null;
-        try {
-            return Float.parseFloat(value);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return x <= 0 && y <= 0 && -(r / 2) - y - x <= 0;
     }
 
 }

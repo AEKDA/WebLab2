@@ -1,22 +1,21 @@
 package itmo.web.lab2.models;
 
-import java.time.LocalDateTime;
 
 public final class TableRow {
     private final float x;
     private final float y;
     private final float r;
     private final boolean hit;
-    private final LocalDateTime clientDate;
-    private final double scriptWorkingTime;
+    private final long Date;
+    private final long executionTime;
 
-    public TableRow(float x, float y, float r, boolean hit, LocalDateTime clientDate, double scriptWorkingTime) {
+    public TableRow(float x, float y, float r, boolean hit, long Date, long executionTime) {
         this.x = x;
         this.y = y;
         this.r = r;
         this.hit = hit;
-        this.clientDate = clientDate;
-        this.scriptWorkingTime = scriptWorkingTime;
+        this.Date = Date;
+        this.executionTime = executionTime;
     }
 
     public float getX() {
@@ -35,11 +34,11 @@ public final class TableRow {
         return hit;
     }
 
-    public LocalDateTime getClientDate() {
-        return clientDate;
+    public long getDate() {
+        return Date;
     }
 
-    public double getScriptWorkingTime() {
-        return scriptWorkingTime;
+    public long getExecutionTime() {
+        return executionTime;
     }
 }
