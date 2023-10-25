@@ -501,6 +501,7 @@ function isFormValid() {
 	let yValue = yInput.value.replace(",", ".");
 	let rValue = rInput.value.replace(",", ".");
 
+
 	if (
 		!checkBased(xValue, -3, 3, "x") ||
 		!checkBased(yValue, -5, 5, "y") ||
@@ -508,8 +509,18 @@ function isFormValid() {
 	) {
 		return false;
 	}
+	if (checkValue(xValue, yValue, rValue)) {
+		return true;
+	} else {
+		return false;
+	}
+}
 
-	return true;
+function checkValue(x, y, r) {
+	if (x > -3 && x < 3 && y > -5 && y < 5 && r < 5 && r > 2) {
+		return true;
+	}
+	return false;
 }
 
 function checkBased(value, left, right, name) {

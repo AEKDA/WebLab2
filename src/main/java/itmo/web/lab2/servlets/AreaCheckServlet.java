@@ -30,14 +30,14 @@ public class AreaCheckServlet extends HttpServlet {
         String jsonString = stringBuilder.toString();
 
         JSONObject jsonObject = new JSONObject(jsonString);
-        Float x;
-        Float y;
-        Float r;
+        Double x;
+        Double y;
+        Double r;
 
         try {
-            x = jsonObject.getFloat("x");
-            y = jsonObject.getFloat("y");
-            r = jsonObject.getFloat("r");
+            x = jsonObject.getDouble("x");
+            y = jsonObject.getDouble("y");
+            r = jsonObject.getDouble("r");
         } catch (JSONException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("Bad request");
@@ -52,7 +52,7 @@ public class AreaCheckServlet extends HttpServlet {
 
         long currentDateTime = System.currentTimeMillis() / 1000L;
 
-        if (x != null && y != null && r != null && checkValue(x,y,r)) {
+        if (x != null && y != null && r != null && checkValue(x, y, r)) {
 
             TableRow newRow = formNewTableRow(x, y, r, currentDateTime);
 
@@ -79,7 +79,7 @@ public class AreaCheckServlet extends HttpServlet {
         }
     }
 
-    public TableRow formNewTableRow(float x, float y, float r, long clientDate) {
+    public TableRow formNewTableRow(double x, double y, double r, long clientDate) {
         long currentTime = System.nanoTime();
         boolean isHit = isHitCircle(x, y, r) || isHitRectangle(x, y, r) || isHitTriangle(x, y, r);
         long scriptWorkingTime = System.nanoTime() - currentTime;
@@ -87,19 +87,19 @@ public class AreaCheckServlet extends HttpServlet {
         return new TableRow(x, y, r, isHit, clientDate, scriptWorkingTime);
     }
 
-    private boolean isHitCircle(float x, float y, float r) {
+    private boolean isHitCircle(double x, double y, double r) {
         return x >= 0 && y >= 0 && (Math.pow(x, 2) + Math.pow(y, 2) <= Math.pow(r / 2, 2));
     }
 
-    private boolean isHitRectangle(float x, float y, float r) {
+    private boolean isHitRectangle(double x, double y, double r) {
         return x >= 0 && x <= r && y <= 0 && y >= -r;
     }
 
-    private boolean isHitTriangle(float x, float y, float r) {
+    private boolean isHitTriangle(double x, double y, double r) {
         return x <= 0 && y <= 0 && -(r / 2) - y - x <= 0;
     }
 
-    private boolean checkValue(float x, float y, float r) {
+    private boolean checkValue(double x, double y, double r) {
         if (x > -3 && x < 3 && y > -5 && y < 5 && r < 5 && r > 2) {
             return true;
         }

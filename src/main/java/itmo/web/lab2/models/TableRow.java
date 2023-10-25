@@ -2,14 +2,14 @@ package itmo.web.lab2.models;
 
 
 public final class TableRow {
-    private final float x;
-    private final float y;
-    private final float r;
+    private final double x;
+    private final double y;
+    private final double r;
     private final boolean hit;
     private final long Date;
     private final long executionTime;
 
-    public TableRow(float x, float y, float r, boolean hit, long Date, long executionTime) {
+    public TableRow(double x, double y, double r, boolean hit, long Date, long executionTime) {
         this.x = x;
         this.y = y;
         this.r = r;
@@ -18,15 +18,15 @@ public final class TableRow {
         this.executionTime = executionTime;
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 
-    public float getR() {
+    public double getR() {
         return r;
     }
 
