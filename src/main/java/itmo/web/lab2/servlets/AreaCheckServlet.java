@@ -45,14 +45,14 @@ public class AreaCheckServlet extends HttpServlet {
         }
 
         // try {
-        //     Thread.sleep(1000);
+        // Thread.sleep(1000);
         // } catch (Exception e) {
 
         // }
 
         long currentDateTime = System.currentTimeMillis() / 1000L;
 
-        if (x != null && y != null && r != null) {
+        if (x != null && y != null && r != null && checkValue(x,y,r)) {
 
             TableRow newRow = formNewTableRow(x, y, r, currentDateTime);
 
@@ -81,8 +81,6 @@ public class AreaCheckServlet extends HttpServlet {
 
     public TableRow formNewTableRow(float x, float y, float r, long clientDate) {
         long currentTime = System.nanoTime();
-        if (x > 3 && x < 3 && y > -5 && y < 5 && r > 2 && r < 5) {
-        }
         boolean isHit = isHitCircle(x, y, r) || isHitRectangle(x, y, r) || isHitTriangle(x, y, r);
         long scriptWorkingTime = System.nanoTime() - currentTime;
 
@@ -101,4 +99,10 @@ public class AreaCheckServlet extends HttpServlet {
         return x <= 0 && y <= 0 && -(r / 2) - y - x <= 0;
     }
 
+    private boolean checkValue(float x, float y, float r) {
+        if (x > -3 && x < 3 && y > -5 && y < 5 && r < 5 && r > 2) {
+            return true;
+        }
+        return false;
+    }
 }

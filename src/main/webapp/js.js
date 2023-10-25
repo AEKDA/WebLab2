@@ -513,7 +513,7 @@ function isFormValid() {
 }
 
 function checkBased(value, left, right, name) {
-	if (isNaN(value) || value < left || value >= right) {
+	if (isNaN(value) || value <= left || value >= right) {
 		showCustomAlert(
 			`Введите корректное значение ${name} в диапазоне от ${left} до ${right} (не включительно).`
 		);
